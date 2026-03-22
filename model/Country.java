@@ -1,17 +1,20 @@
 package model;
 public class Country {
-    private final String name;
-    private final int population;
-    private int infected;
-    private double infectionRate;
+    public final String name;
+    public final int population;
+    public int infected;
+    public double infectionRate;
     public Country(String name, int population, double infectionRate) {
         this.name = name;
         this.population = population;
         this.infectionRate = infectionRate;
         this.infected = 0;
     }
+
     public void updateInfection(double difficultyMultiplier) {
-        int newInfections = (int)(infected * infectionRate * difficultyMultiplier);
+        if (infected <= 0) return;
+
+        int newInfections = (int) (infected * infectionRate * difficultyMultiplier);
         infected = Math.min(population, infected + Math.max(newInfections, 1));
     }
     public boolean isFullyInfected() {

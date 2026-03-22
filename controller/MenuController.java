@@ -1,8 +1,13 @@
 package controller;
+import model.Difficulty;
 import view.*;
-import util.FileManager;
+import model.HighScore;
+
+import javax.swing.*;
+
 public class MenuController {
-    private final MainMenuView view;
+    public final MainMenuView view;
+
     public MenuController() {
         view = new MainMenuView();
         view.newGameButton.addActionListener(e -> startNewGame());
@@ -10,10 +15,25 @@ public class MenuController {
         view.exitButton.addActionListener(e -> System.exit(0));
         view.setVisible(true);
     }
-    private void startNewGame() {
-        javax.swing.JOptionPane.showMessageDialog(view, "Next phase: Difficulty selection");
+
+    public void startNewGame() {
+
+            Difficulty difficulty = showDifficultyDialog();
+            if (difficulty != null) {
+                view.dispose();
+                new GameController(difficulty);
+            }
+
+
     }
-    private void showHighScores() {
-        new HighScoreView(FileManager.loadScores()).setVisible(true);
+
+    public void showHighScores() {
+        new HighScoreView(HighScore.loadAll()).setVisible(true);
+    }
+
+
+    private Difficulty showDifficultyDialog() {
+        return DifficultyDialog.showDialog(view);
     }
 }
+
